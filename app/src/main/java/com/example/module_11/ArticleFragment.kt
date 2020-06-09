@@ -7,13 +7,17 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_article.*
 
-class ArticleFragment: Fragment(R.layout.fragment_article) {
+class ArticleFragment(): Fragment(R.layout.fragment_article) {
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         textView.setText(requireArguments().getInt(KEY_TEXT))
         imageView.setImageResource(requireArguments().getInt(KEY_IMAGE))
     }
+
+
 
     companion object {
         private const val KEY_TEXT = "text"
