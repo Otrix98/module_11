@@ -1,19 +1,14 @@
 package com.example.module_11
 
-import android.app.AlertDialog
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_article.*
 import kotlinx.android.synthetic.main.fragment_viewpager.*
-import kotlin.random.Random
+
 
 class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
 
@@ -61,6 +56,12 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
             drawableRes = R.drawable.drawable_8
         )
     )
+val currentData = emptyArray<String>()
+
+
+
+val filterData = arrayOf(true,true,true,true,true,true)
+
 
 
 // fun filtredScreens(){
@@ -71,7 +72,6 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
 
 
@@ -117,15 +117,26 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
         })
 
         button_filter.setOnClickListener {
-            ChoiseDialogFragment(screens)
-                .show(childFragmentManager, "choisedialogfragment ")
+            ChoiseDialogFragment.newInstance(filterData, screens).show(childFragmentManager, "choisedialogfragment ")
         }
 
 
 
     }
 
+    companion object {
+        fun newInstance(filter: Array<String>): ViewPagerFragment {
 
+            val viewPager = ViewPagerFragment()
+            val checkedArgs = Bundle()
+
+            checkedArgs.putStringArray("tag", filter)
+
+            viewPager.arguments = checkedArgs
+
+            return viewPager
+
+        }}
 
 
 }

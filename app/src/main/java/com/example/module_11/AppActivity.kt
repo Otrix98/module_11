@@ -19,7 +19,7 @@ class AppActivity : AppCompatActivity() {
 
     private fun showViewPagerFragment(){
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, ViewPagerFragment())
+            .add(R.id.container, ViewPagerFragment())
             .commit()
     }
 }
