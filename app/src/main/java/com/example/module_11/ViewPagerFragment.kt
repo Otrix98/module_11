@@ -56,11 +56,44 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
             drawableRes = R.drawable.drawable_8
         )
     )
-val currentData = emptyArray<String>()
+
+    private var filtredArticles = screens
+
+
+    fun onConfirm(tag: Array<Boolean>) {
+        filterData = tag
+        var screensFiltred = emptyArray<ArticalScreen>()
+        val news = screens.map { it.tag.contains(ArticleTag.NEWS)}
+        val sport = screens.map { it.tag.contains(ArticleTag.SPORT) }
+        val political = screens.map { it.tag.contains(ArticleTag.POLITICAL) }
+        val art = screens.map { it.tag.contains(ArticleTag.ART) }
+        val it = screens.map { it.tag.contains(ArticleTag.IT) }
+        val media = screens.map { it.tag.contains(ArticleTag.MEDIA) }
+
+        for (i in tag)
+            if (tag[0]) {
+                 screensFiltred.union(news)
+            } else if (tag[1]) {
+                screensFiltred.union(sport)
+            } else if (tag[2]) {
+                screensFiltred.union(political)
+            } else if (tag[3]) {
+                screensFiltred.union(art)
+            } else if (tag[4]) {
+                screensFiltred.union(it)
+            } else if (tag[5]) {
+                screensFiltred.union(media)
+            }
+
+
+        filtredArticles = screensFiltred.toList()
+    }
 
 
 
-val filterData = arrayOf(true,true,true,true,true,true)
+
+
+    var filterData = arrayOf(true,true,true,true,true,true)
 
 
 
@@ -75,7 +108,7 @@ val filterData = arrayOf(true,true,true,true,true,true)
 
 
 
-        val adapter = Adapter(screens, this)
+        val adapter = Adapter(filtredArticles, this)
         viewPager.adapter = adapter
         dotsIndicator.setViewPager2(viewPager)
 
@@ -124,19 +157,6 @@ val filterData = arrayOf(true,true,true,true,true,true)
 
     }
 
-    companion object {
-        fun newInstance(filter: Array<String>): ViewPagerFragment {
-
-            val viewPager = ViewPagerFragment()
-            val checkedArgs = Bundle()
-
-            checkedArgs.putStringArray("tag", filter)
-
-            viewPager.arguments = checkedArgs
-
-            return viewPager
-
-        }}
 
 
 }

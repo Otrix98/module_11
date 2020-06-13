@@ -22,17 +22,16 @@ class ChoiseDialogFragment(): DialogFragment() {
             arrayChecked[5] = it.getBoolean(ArticleTag.MEDIA.name)
         }
 
-        val currentTags = emptyArray<String>()
+        val currentTags = arrayOf(true, true, true, true, true, true )
         val tags = arrayOf(ArticleTag.NEWS.name, ArticleTag.SPORT.name, ArticleTag.POLITICAL.name, ArticleTag.ART.name, ArticleTag.IT.name, ArticleTag.MEDIA.name)
          return AlertDialog.Builder(requireContext())
             .setTitle("поиск по тегам")
             .setMultiChoiceItems(tags, arrayChecked) { dialog, which, isChecked ->
                 arrayChecked[which] = isChecked
-                for (i in tags.indices) {
-
+                for (i in arrayChecked.indices) {
                     val checked = arrayChecked[i]
                     if (checked) {
-                       currentTags.plus(tags[i])
+                        currentTags[i] = false
                     }
                 }
             }
@@ -41,10 +40,8 @@ class ChoiseDialogFragment(): DialogFragment() {
              .create()
     }
 
-    fun showViewPagerFragment(tag: Array<String>){
-        AppActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container, ViewPagerFragment.newInstance(tag))
-            .commit()
+    fun showViewPagerFragment(tag: Array<Boolean>){
+        parentFragment.let { it as ViewPagerFragment }.onConfirm(tag)
     }
 
     companion object {
