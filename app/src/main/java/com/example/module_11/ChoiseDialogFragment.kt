@@ -35,7 +35,7 @@ class ChoiseDialogFragment(): DialogFragment() {
                     }
                 }
             }
-            .setPositiveButton("Применить") { _, _ -> showViewPagerFragment(currentTags)}
+            .setPositiveButton("Применить") { _, _ -> showViewPagerFragment(arrayChecked.toTypedArray())}
              .setNegativeButton("Отмена") { _, _ ->  }
              .create()
     }
@@ -45,7 +45,7 @@ class ChoiseDialogFragment(): DialogFragment() {
     }
 
     companion object {
-        fun newInstance(filter: Array<Boolean>, currentTags: List<ArticalScreen>): DialogFragment {
+        fun newInstance(filter: Array<Boolean>): DialogFragment {
 
             val tmp = ChoiseDialogFragment()
             val args = Bundle()

@@ -12,6 +12,15 @@ import kotlinx.android.synthetic.main.fragment_viewpager.*
 
 class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
 
+    private fun applyFilter(viewpager: ViewPager2, screens : List<ArticalScreen>) {
+        val adapter = Adapter(screens, this)
+        viewpager.adapter = adapter
+        TabLayoutMediator(Tablayout, viewPager) { tab, position ->
+            tab.text = "Вкладка ${position + 1}"
+        }.attach()
+        dotsIndicator.setViewPager2(viewPager)
+    }
+
 
 
     private val screens: List<ArticalScreen> = listOf(
@@ -60,33 +69,25 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
     private var filtredArticles = screens
 
 
-    fun onConfirm(tag: Array<Boolean>) {
-        filterData = tag
-        var screensFiltred = emptyArray<ArticalScreen>()
-        val news = screens.map { it.tag.contains(ArticleTag.NEWS)}
-        val sport = screens.map { it.tag.contains(ArticleTag.SPORT) }
-        val political = screens.map { it.tag.contains(ArticleTag.POLITICAL) }
-        val art = screens.map { it.tag.contains(ArticleTag.ART) }
-        val it = screens.map { it.tag.contains(ArticleTag.IT) }
-        val media = screens.map { it.tag.contains(ArticleTag.MEDIA) }
+    fun onConfirm(filteredData : Array<Boolean>) {
 
-        for (i in tag)
-            if (tag[0]) {
-                 screensFiltred.union(news)
-            } else if (tag[1]) {
-                screensFiltred.union(sport)
-            } else if (tag[2]) {
-                screensFiltred.union(political)
-            } else if (tag[3]) {
-                screensFiltred.union(art)
-            } else if (tag[4]) {
-                screensFiltred.union(it)
-            } else if (tag[5]) {
-                screensFiltred.union(media)
+        val tmpModelList = ArrayList<ArticalScreen>()
+
+        for (e in screens)
+        {
+
+            if ((filteredData[0] && e.tag.contains(ArticleTag.NEWS)) ||
+                (filteredData[1] && e.tag.contains(ArticleTag.POLITICAL)) ||
+                (filteredData[2] && e.tag.contains(ArticleTag.IT)) ||
+                (filteredData[3] && e.tag.contains(ArticleTag.MEDIA)) ||
+                (filteredData[4] && e.tag.contains(ArticleTag.ART)) ||
+                (filteredData[5] && e.tag.contains(ArticleTag.SPORT))) {
+
+                tmpModelList.add(e)
             }
-
-
-        filtredArticles = screensFiltred.toList()
+        }
+        filterData = filteredData
+        applyFilter(viewPager, tmpModelList)
     }
 
 
@@ -97,51 +98,20 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
 
 
 
-// fun filtredScreens(){
-//    val adapter = Adapter(filteredArticles, this)
-//    viewPager.adapter = adapter
-//    dotsIndicator.setViewPager2(viewPager)
-//}
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
-
-        val adapter = Adapter(filtredArticles, this)
-        viewPager.adapter = adapter
-        dotsIndicator.setViewPager2(viewPager)
-
-        viewPager.offscreenPageLimit = 1
-
-        viewPager.setCurrentItem(2, false)
-        viewPager.currentItem
-
-
-        viewPager.setPageTransformer(PopTransformation())
-
-        TabLayoutMediator(Tablayout, viewPager){
-            tab, position  -> tab.text =
-            when(position) {
-                0 -> "Верховный суд..."
-                1 -> "Бизнес не..."
-                2 -> "Касперская..."
-                3 -> "Сбербанк..."
-                4 -> "Есть ли..."
-                5 -> "Директор..."
-                6 -> "Союз России..."
-                else -> {"Мэтру - 80"}
-            }
-        }.attach()
 
         button.setOnClickListener {
             Tablayout.getTabAt((0 until 7).random())?.orCreateBadge?.apply {
                 number = getNumber()+1
                 badgeGravity = BadgeDrawable.BOTTOM_END
             }
-
         }
 
+        filterData = arrayOf(true,true,true,true,true,true)
+        setHasOptionsMenu(true)
+        applyFilter(viewPager, screens)
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -150,13 +120,9 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
         })
 
         button_filter.setOnClickListener {
-            ChoiseDialogFragment.newInstance(filterData, screens).show(childFragmentManager, "choisedialogfragment ")
+            ChoiseDialogFragment.newInstance(filterData).show(childFragmentManager, "choisedialogfragment ")
         }
 
-
-
     }
-
-
 
 }
