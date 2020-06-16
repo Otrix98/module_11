@@ -77,11 +77,11 @@ class ViewPagerFragment: Fragment(R.layout.fragment_viewpager) {
         {
 
             if ((filteredData[0] && e.tag.contains(ArticleTag.NEWS)) ||
-                (filteredData[1] && e.tag.contains(ArticleTag.POLITICAL)) ||
-                (filteredData[2] && e.tag.contains(ArticleTag.IT)) ||
-                (filteredData[3] && e.tag.contains(ArticleTag.MEDIA)) ||
-                (filteredData[4] && e.tag.contains(ArticleTag.ART)) ||
-                (filteredData[5] && e.tag.contains(ArticleTag.SPORT))) {
+                (filteredData[1] && e.tag.contains(ArticleTag.SPORT)) ||
+                (filteredData[2] && e.tag.contains(ArticleTag.POLITICAL)) ||
+                (filteredData[3] && e.tag.contains(ArticleTag.ART)) ||
+                (filteredData[4] && e.tag.contains(ArticleTag.IT)) ||
+                (filteredData[5] && e.tag.contains(ArticleTag.MEDIA))) {
 
                 tmpModelList.add(e)
             }
